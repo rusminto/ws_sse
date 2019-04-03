@@ -1,8 +1,9 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link to="/">SSE</router-link> |
-      <router-link to="/about">WS</router-link>
+      <router-link to="/">WS</router-link> |
+      <router-link to="/http/1">HTTP/1.1</router-link> |
+	  <router-link to="/http/2">HTTP/2</router-link>
     </div>
     <router-view/>
   </div>

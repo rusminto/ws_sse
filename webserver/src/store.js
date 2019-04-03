@@ -40,7 +40,7 @@ export default new Vuex.Store({
       Vue.prototype.$socket.send(message)
 	},
 	close: function(context=null) {
-		Vue.prototype.$socket.close()
+		Vue.prototype.$socket.disconnect()
 	}
   }
 })

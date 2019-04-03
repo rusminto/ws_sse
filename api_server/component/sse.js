@@ -3,23 +3,29 @@ var cors = require('cors');
 const app = express()
 const mqtt = require('mqtt')
 var client = mqtt.connect('mqtt://localhost')
-var topics = "smarthome"
+var topics = "arduino-server"
 
 app.use(cors())
 app.use(express.static('public'))
+app.use(express.json());
 
 client.subscribe(topics);
 
 app.get('/', (req, res) => {
-	// SSE Setup
 	res.writeHead(200, {
 		'Content-Type': 'text/event-stream',
 		'Cache-Control': 'no-cache',
 		'Connection': 'keep-alive',
 	});
 	res.write('\n');
-	countdown(res)
+	sendMessage(res)
 });
+
+app.post('/', (req, res) => {
+	client.publish('server-arduino', req.body.data)
+	res.send('OK');
+});
+
 
 app.listen(3000, function () { console.log(`http/1.1 on port 3000!`) });
 
@@ -29,7 +35,7 @@ app.listen(3000, function () { console.log(`http/1.1 on port 3000!`) });
 // 	countTes++
 // })
 
-function countdown(stream) {
+function sendMessage(stream) {
 
 	client.on('message', function (topic, message) {
 		// message is Buffer

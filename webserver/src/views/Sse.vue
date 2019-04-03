@@ -1,7 +1,5 @@
 <template>
     <div class="home">
-        <!-- <img alt="Vue logo" src="../assets/logo.png"> -->
-        <!-- <HelloWorld :msg="sse?sse:'kosong'"/> -->
         <button @click="setupStream">run</button>
         <button @click="stopStream" style="margin-left: 20px">stop</button>
         <p>{{state?state:'null'}}</p>
@@ -12,24 +10,33 @@
 <script>
 // @ is an alias to /src
 /* eslint-disable */
-import HelloWorld from "@/components/HelloWorld.vue";
 
 var source;
 
 export default {
-    name: "home",
-    components: {
-        HelloWorld
-    },
     data() {
         return {
             sse: null,
             state: null,
             tes: null,
             count: 0,
-            api: "http://localhost:3000"
+			api1: "http://localhost:3000",
+			api2: "https://localhost:3001"
         };
-    },
+	},
+	
+	computed: {
+		api(){
+			return this.$route.params.type == 2 ? this.api2 : this.api1
+		}
+	},
+
+	watch: {
+		api(val){
+			source.close()
+			this.state = "Disconnected";
+		}
+	},
 
     methods: {
         setupStream() {

@@ -6,8 +6,7 @@ import store from './store'
 import './registerServiceWorker'
 import VueNativeSock from 'vue-native-websocket'
 
-Vue.use(VueNativeSock, 'ws://localhost:1337', { store: store, reconnection: true,
-reconnectionDelay: 3000 })
+Vue.use(VueNativeSock, 'ws://localhost:1337', { store: store })
 
 Vue.config.productionTip = false
 // Vue.use(mqtt, 'ws://6e989e90.ngrok.io', {clientId: 'WebClient-' + parseInt(Math.random() * 100000)});

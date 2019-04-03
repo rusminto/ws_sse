@@ -21,16 +21,18 @@ export default {
     },
     methods: {
         publish() {
-            // $socket is [WebSocket](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket) instance
+			// $socket is [WebSocket](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket) instance
             this.$store.dispatch("sendMessage", "tes");
             this.$options.sockets.onmessage = data => {
+				console.log(data.data);
+				
                 this.msg.push(data.data);
             };
 		},
 		clear(){
 			// this.$store.dispatch("sendMessage", "close");
 			// this.$store.dispatch("close");
-			
+			// this.$socket.close()
 			this.msg = []
 		}
     }
