@@ -12,26 +12,36 @@ http2.createSecureServer({
 	cert: fs.readFileSync('./cert/server.crt')
 },
 	(req, res) => {
-		new Promise((resolve) => {
-			res.statusCode = 200;
-			res.setHeader('Content-Type', 'text/event-stream');
-			res.setHeader('Cache-Control', 'no-cache')
+
+		console.log(req.headers[':method']);
+		
+		if (req.headers[':method'] == 'OPTIONS') {
+			client.publish('server-arduino', 'sse_http2')
 			res.setHeader('Access-Control-Allow-Origin', '*')
-			res.write(`\n`)
-			resolve(null)
-		}).then(() => {
-			new Promise((resolve, reject) => {
-				client.on('message', function (topic, message) {
-					try{
-						res.write("event: message\ndata: " + message.toString('utf-8') + "\n\n")
-					}catch(err){
-						res.end()
-					}
-				});
+			res.write('OK')
+		} else {
+
+			new Promise((resolve) => {
+				res.statusCode = 200;
+				res.setHeader('Content-Type', 'text/event-stream');
+				res.setHeader('Cache-Control', 'no-cache')
+				res.setHeader('Access-Control-Allow-Origin', '*')
+				res.write(`\n`)
+				resolve(null)
 			}).then(() => {
-				// res.end();
+				new Promise((resolve, reject) => {
+					client.on('message', function (topic, message) {
+						try {
+							res.write("event: message\ndata: " + message.toString('utf-8') + "\n\n")
+						} catch (err) {
+							res.end()
+						}
+					});
+				}).then(() => {
+					// res.end();
+				})
 			})
-		})
+		}
 
 	}
 ).listen(

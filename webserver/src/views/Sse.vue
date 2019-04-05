@@ -2,6 +2,7 @@
     <div class="home">
         <button @click="setupStream">run</button>
         <button @click="stopStream" style="margin-left: 20px">stop</button>
+        <button @click="postTest" style="margin-left: 20px">send</button>
         <p>{{state?state:'null'}}</p>
         <p>{{sse?sse:'null'}}</p>
     </div>
@@ -20,28 +21,28 @@ export default {
             state: null,
             tes: null,
             count: 0,
-			api1: "http://localhost:3000",
-			api2: "https://localhost:3001"
+            api1: "http://localhost:3000",
+            api2: "https://localhost:3001"
         };
-	},
-	
-	computed: {
-		api(){
-			return this.$route.params.type == 2 ? this.api2 : this.api1
-		}
-	},
+    },
 
-	watch: {
-		api(val){
-			source.close()
-			this.state = "Disconnected";
-		}
-	},
+    computed: {
+        api() {
+            return this.$route.params.type == 2 ? this.api2 : this.api1;
+        }
+    },
+
+    watch: {
+        api(val) {
+            source.close();
+            this.state = "Disconnected";
+        }
+    },
 
     methods: {
         setupStream() {
             if (!!window.EventSource) {
-                source  = new EventSource(this.api);
+                source = new EventSource(this.api);
 
                 source.addEventListener(
                     "message",
@@ -75,17 +76,31 @@ export default {
                 console.log("Your browser doesn't support SSE");
             }
         },
-        stopStream(){
-            source.close()
+        stopStream() {
+            source.close();
             this.state = "Disconnected";
         },
-        getTest() {
-            fetch(`${this.api}/tes`, {})
-                .then(response => response.json())
-                .then(body => {
-                    this.tes = `${body.data} ke-${this.count}`
-                    this.count++
+        postTest() {
+			console.log(this.api == this.api1 ? "sse_http1" : "sse_http2");
+			
+            fetch(`${this.api}/`, {
+				method: "POST",
+				headers:{
+					'Content-Type': 'application/json'
+				},
+                body: JSON.stringify({
+                    data: this.api == this.api1 ? "sse_http1" : "sse_http2"
                 })
+            })
+                .then(response => {
+					console.log(response.statusText);
+					
+				})
+                // .then(body => {
+					
+                //     // this.tes = `${body.data} ke-${this.count}`
+                //     // this.count++
+                // });
         }
     }
 };
