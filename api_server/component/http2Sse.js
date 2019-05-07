@@ -45,5 +45,7 @@ http2.createSecureServer({
 
 	}
 ).listen(
-	3001
+	3001, () => {
+		console.log("http/2 on port 3001");
+	}
 );

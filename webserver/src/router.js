@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import sse from './views/Sse.vue'
 import websocket from './views/Ws.vue'
+import Dashboard from './views/Dashboard.vue'
 
 Vue.use(Router)
 
@@ -10,7 +11,7 @@ export default new Router({
   base: process.env.BASE_URL,
   routes: [
     {
-      path: '/',
+      path: '/ws',
 	  name: 'websocket',
 	  component: websocket
 	},
@@ -18,6 +19,11 @@ export default new Router({
 		path: '/http/:type',
 		name: 'sse',
 		component: sse
+	},
+	{
+		path: '/',
+		name: 'dashboard',
+		component: Dashboard
 	}
   ]
 })

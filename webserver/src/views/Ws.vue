@@ -3,9 +3,7 @@
         <input type="button" @click="publish" value="start">
 		<input type="button" @click="clear" value="clear"  style="margin-left: 20px">
 		<input type="button" @click="send" value="send"  style="margin-left: 20px">
-		<div v-for="data in msg" :key="data">
-        {{data?data:"null"}}
-		</div>
+		<br>{{msg?msg:"null"}}
     </div>
 </template>
 
@@ -13,7 +11,7 @@
 export default {
     data() {
         return {
-            msg: [],
+            msg: null,
             publishText: null
         };
     },
@@ -24,9 +22,8 @@ export default {
         publish() {
 			// $socket is [WebSocket](https://developer.mozilla.org/en-US/docs/Web/API/WebSocket) instance
             this.$options.sockets.onmessage = data => {
-				console.log(data.data);
 				
-                this.msg.push(data.data);
+                this.msg = data.data;
             };
 		},
 		clear(){

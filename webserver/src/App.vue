@@ -1,10 +1,10 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">WS</router-link> |
+    <!-- <div id="nav">
+      <router-link to="/ws">WS</router-link> |
       <router-link to="/http/1">HTTP/1.1</router-link> |
 	  <router-link to="/http/2">HTTP/2</router-link>
-    </div>
+    </div> -->
     <router-view/>
   </div>
 </template>

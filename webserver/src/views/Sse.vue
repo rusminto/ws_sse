@@ -21,8 +21,8 @@ export default {
             state: null,
             tes: null,
             count: 0,
-            api1: "http://localhost:3000",
-            api2: "https://localhost:3001"
+            api1: "http://serveo.net:3557",
+            api2: "https://serveo.net:3556"
         };
     },
 
