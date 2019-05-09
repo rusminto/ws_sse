@@ -21,8 +21,8 @@ export default {
             state: null,
             tes: null,
             count: 0,
-            api1: "http://serveo.net:3557",
-            api2: "https://serveo.net:3556"
+            api1: "http://localhost:3000",
+            api2: "https://localhost:3001"
         };
     },
 
@@ -81,26 +81,24 @@ export default {
             this.state = "Disconnected";
         },
         postTest() {
-			console.log(this.api == this.api1 ? "sse_http1" : "sse_http2");
-			
+            console.log(this.api == this.api1 ? "sse_http1" : "sse_http2");
+
             fetch(`${this.api}/`, {
-				method: "POST",
-				headers:{
-					'Content-Type': 'application/json'
-				},
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
                 body: JSON.stringify({
                     data: this.api == this.api1 ? "sse_http1" : "sse_http2"
                 })
-            })
-                .then(response => {
-					console.log(response.statusText);
-					
-				})
-                // .then(body => {
-					
-                //     // this.tes = `${body.data} ke-${this.count}`
-                //     // this.count++
-                // });
+            }).then(response => {
+                console.log(response.statusText);
+            });
+            // .then(body => {
+
+            //     // this.tes = `${body.data} ke-${this.count}`
+            //     // this.count++
+            // });
         }
     }
 };

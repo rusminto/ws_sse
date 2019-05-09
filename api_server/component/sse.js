@@ -21,8 +21,8 @@ app.get('/', (req, res) => {
 	sendMessage(res)
 });
 
-app.post('/', (req, res) => {
-	client.publish('server-arduino', req.body.data)
+app.post('/', (req, res) => {	
+	client.publish('server-arduino', JSON.stringify(req.body))
 	res.send('OK');
 });
 

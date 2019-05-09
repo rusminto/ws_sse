@@ -14,12 +14,15 @@ http2.createSecureServer({
 	(req, res) => {
 
 		console.log(req.headers[':method']);
+		console.log(req.stream);
 		
-		if (req.headers[':method'] == 'OPTIONS') {
+		if (req.headers[':method'] == 'POST') {
+			// console.log(req.stream);
+			
 			client.publish('server-arduino', 'sse_http2')
 			res.setHeader('Access-Control-Allow-Origin', '*')
 			res.write('OK')
-		} else {
+		} else if (req.headers[':method'] == 'GET') {
 
 			new Promise((resolve) => {
 				res.statusCode = 200;
@@ -48,4 +51,4 @@ http2.createSecureServer({
 	3001, () => {
 		console.log("http/2 on port 3001");
 	}
-);
+)

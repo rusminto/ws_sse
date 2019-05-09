@@ -10,8 +10,8 @@ klien.connect("localhost")
 
 while True:
     value = random.randint(1, 101)
-    value = value * pow(10000, 10000)
+#    value = value * pow(10000, 10000)
     klien.publish("arduino-server", str(value))
-    time.sleep(3)
+    time.sleep(1)
 
 klien.disconnect()

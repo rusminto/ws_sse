@@ -8,7 +8,10 @@
     "start": "vue-cli-service serve"
   },
   "dependencies": {
+    "fetch-h2": "^2.2.0",
+    "http2": "^3.3.7",
     "register-service-worker": "^1.6.2",
+    "spdy-transport": "^3.0.0",
     "vue": "^2.6.6",
     "vue-mqtt": "^2.0.3",
     "vue-native-websocket": "^2.0.12",

@@ -1,48 +1,96 @@
 <template>
 <html>
-	<div class="applist-container">
-            <the-header></the-header>
-            <div class="applist-wrapper-body">
-                <div class="content-wrapper">
-                    <div class="title-wrapper">
-                        <div class="title">
-                            <p>Ruangan</p>
-                        </div>
+    <div class="applist-container">
+        <the-header></the-header>
+        <div class="applist-wrapper-body">
+            <div class="content-wrapper">
+                <!-- <div class="title-wrapper">
+                    <div class="title">
+                        <p>Ruangan</p>
                     </div>
-                    <div class="white-warp">
-                        <div v-for="(room, index) in rooms" :key="index">
-                            <the-room
-							:room="room"
-                            ></the-room>
-                        </div>
+                </div> -->
+                <div class="white-warp">
+                    <div v-for="(room, index) in rooms" :key="index">
+                        <the-room :room="room" @change-option="send($event)"></the-room>
                     </div>
                 </div>
             </div>
         </div>
-</html>	
+    </div>
+</html>
 </template>
 <script>
 import TheHeader from "@/components/Header";
 import TheRoom from "@/components/Room";
-import {firstData} from "@/components/HomeAttribute";
+import { firstData } from "@/components/HomeAttribute";
+// import { fetch2 } from "fetch-h2";
+// var spdy = require('spdy');
+// var https = require('https');
+// import spdy from "spdy";
+// import https from "https"
+
+var client = [];
+var connection = null;
+
 
 export default {
-	components:{
-		TheHeader,
-		TheRoom
-	},
-	data(){
-		return {
-			rooms: [] 
-		}
-	},
-	methods:{
+    components: {
+        TheHeader,
+        TheRoom
+    },
+    data() {
+        return {
+            rooms: [],
+            apiWs: "ws://localhost:1337",
+            apiSse1: "http://localhost:3000",
+            apiSse2: "https://localhost:3001"
+        };
+    },
+    methods: {
+        send(msg) {
+            console.log(msg);
+            switch (this.$route.params.type) {
+                case "ws":
+                    client[0].send(msg);
+                    break;
 
-	},
-	created(){
-		this.rooms = firstData
-	}
-}
+                case "sse1":
+                    fetch(`${this.apiSse1}/`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: msg
+                    }).then(response => {
+                        console.log(response.statusText);
+                    });
+                    break;
+
+                case "sse2":
+                    // const method = 'POST';
+                    // var buffer = new Buffer(msg);
+                    // var contentLength = buffer.length
+                    // const response = fetch( this.apiSse2, { method, contentLength, msg } );
+                    break;
+            }
+        }
+    },
+    created() {
+        this.rooms = firstData;
+        switch (this.$route.params.type) {
+            case "ws":
+                client[0] = new WebSocket(this.apiWs);
+                break;
+            case "sse1":
+                client[0] = new EventSource(this.apiSse1);
+                break;
+			case "sse2":
+				// connection = require("http2").get(this.apiSse2)
+                client[0] = new EventSource(this.apiSse2);
+                break;
+        }
+    }
+};
 </script>
 <style scoped>
 .applist-container {
@@ -56,8 +104,7 @@ export default {
 .applist-wrapper-body {
     display: flex;
     flex-flow: row wrap;
-    align-items: flex-start;
-    align-content: flex-start;
+	justify-content: center;
     width: 100%;
     min-height: 100vh;
 }
@@ -102,18 +149,17 @@ div.blue-btn:hover {
 }
 
 .white-warp {
-    width: 1010px;
+    width: 100%;
     height: auto;
     text-align: left;
     line-height: 1.6;
     display: flex;
     flex-flow: row wrap;
-    justify-content: flex-start; 
+	justify-content: center
 }
 
 .content-wrapper {
-    margin: 120px 0px 0px 13%;
+    margin-top: 20px;
     width: 80%;
-	overflow-x: scroll;
 }
 </style>

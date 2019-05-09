@@ -1,101 +1,101 @@
 export const firstData =   [
 	{
-		name: "guess bedroom",
+		name: "Kamar tidur depan",
 		property: [
-			{name: "lamp",
-			status: "off"}
+			{name: "Lampu",
+			status: "MATI"}
 		]
 	},
 	{
-		name: "my bedroom",
+		name: "Kamar tidur utama",
 		property: [
-			{name: "lamp",
-			status: "off"}
+			{name: "Lampu",
+			status: "MATI"}
 		]
 	},
 	{
-		name: "kitchen",
+		name: "Dapur",
 		property: [
-			{name: "lamp",
-			status: "off"},
-			{name: "fan",
-			status: "off"}
+			{name: "Lampu",
+			status: "MATI"},
+			{name: "Kipas Angin",
+			status: "MATI"}
 		]
 	},
 	{
-		name: "dining room",
+		name: "Ruang makan",
 		property: [
-			{name: "lamp",
-			status: "off"}
+			{name: "Lampu",
+			status: "MATI"}
 		]
 	},
 	{
-		name: "terrace",
+		name: "Teras",
 		property: [
-			{name: "door",
-			status: "close"},
-			{name: "lamp",
-			status: "off"}
+			{name: "Pintu",
+			status: "TUTUP"},
+			{name: "Lampu",
+			status: "MATI"}
 		]
 	},
 	{
-		name: "guess room",
+		name: "Ruang tamu",
 		property: [
-			{name: "lamp", 
-			status: "off"}
+			{name: "Lampu", 
+			status: "MATI"}
 		]
 	},
 	{
-		name: "living room",
+		name: "Ruang keluarga",
 		property: [
-			{name: "lamp",
-			status: "off"},
-			{name: "fan",
-			status: "off"}
+			{name: "Lampu",
+			status: "MATI"},
+			{name: "Kipas Angin",
+			status: "MATI"}
 		]
 	},
 	{
-		name: "prayer room",
+		name: "Mushola",
 		property: [
-			{name: "lamp",
-			status: "off"}
+			{name: "Lampu",
+			status: "MATI"}
 		]
 	},
 	{
-		name: "first bathroom",
+		name: "Kamar mandi #1",
 		property: [
-			{name: "lamp",
-			status: "off"}
+			{name: "Lampu",
+			status: "MATI"}
 		]
 	},
 	{
-		name: "second bedroom",
+		name: "Kamar mandi #2",
 		property: [
-			{name: "lamp",
-			status: "off"}
+			{name: "Lampu",
+			status: "MATI"}
 		]
 	},
 	{
-		name: "washing room",
+		name: "Tempat pencucian",
 		property: [
-			{name: "lamp",
-			status: "off"}
+			{name: "Lampu",
+			status: "MATI"}
 		]
 	},
 	{
-		name: "backyard",
+		name: "Halaman Belakang",
 		property: [
-			{name: "lamp",
-			status: "off"}
+			{name: "Lampu",
+			status: "MATI"}
 		]
 	},
 	{
-		name: "garage",
+		name: "Garasi",
 		property: [
-			{name: "door",
-			status: "close"},
-			{name: "lamp",
-			status: "off"}
+			{name: "Pintu",
+			status: "TUTUP"},
+			{name: "Lampu",
+			status: "MATI"}
 		]
 	}
 ]

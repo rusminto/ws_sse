@@ -4,8 +4,12 @@
 		<v-layout align-start justify-start column>
 		<div v-for="(property, index) in room.property" :key="index" class="">
 				<p class="room-property grey--text text--darken-1">{{property.name}}</p>
-				<select v-model="property.status">
-					<option :value="option" v-for="option in options" :key="option">{{option}}</option>
+				<select v-model="selectedOption">
+					<option :value="select(property, option)"
+					v-for="option in (property.name == 'Lampu' ? optionLamp :
+					(property.name == 'Kipas Angin' ? optionFan :optionDoor	))" :key="option"
+					>{{option}}
+					</option>
 				</select>
 		</div>
 		</v-layout>
@@ -16,18 +20,41 @@
 export default {
     data() {
         return {
-			options:[
-				"off",
-				"on",
-				"low",
-				"medium",
-				"high",
-				"close",
-				"open"
-			]
+			optionLamp:[
+				"MATI",
+				"HIDUP - REDUP",
+				"HIDUP - SEDANG",
+				"HIDUP - TERANG"				
+			],
+			optionFan:[
+				"MATI",
+				"HIDUP - PELAN",
+				"HIDUP - SEDANG",
+				"HIDUP - CEPAT"
+			],
+			optionDoor:[
+				"TUTUP",
+				"BUKA"
+			],
+			selectedOption: "MATI"
 		};
     },
-    props: ["room"]
+	props: ["room"],
+	methods:{
+		select(property, option){
+			let selectedProperty = {
+				room: this.room.name,
+				property: property.name,
+				status: option
+			}
+			return JSON.stringify(selectedProperty)
+		}
+	},
+	watch:{
+		selectedOption(val){
+			this.$emit("change-option", val)
+		}
+	}
 };
 </script>
 <style scoped>
@@ -61,7 +88,7 @@ export default {
 select{
 	border: solid 1px rgba(102, 113, 123, 0.21);
     border-radius: 4px;
-    width: 100%;
+    width: 123px;
     min-height: 20px;
     padding-left: 5px;
     font-size: 12px;
