@@ -3,6 +3,8 @@ const fs = require('fs');
 const mqtt = require('mqtt')
 var client = mqtt.connect('mqtt://localhost')
 var topics = "arduino-server"
+const __sensor = require('./filterSensor.js')
+const sensor = new __sensor()
 
 client.subscribe(topics);
 
@@ -12,9 +14,6 @@ http2.createSecureServer({
 	cert: fs.readFileSync('./cert/server.crt')
 },
 	(req, res) => {
-
-		console.log(req.headers[':method']);
-		console.log(req.stream);
 		
 		if (req.headers[':method'] == 'POST') {
 			// console.log(req.stream);
@@ -35,7 +34,8 @@ http2.createSecureServer({
 				new Promise((resolve, reject) => {
 					client.on('message', function (topic, message) {
 						try {
-							res.write("event: message\ndata: " + message.toString('utf-8') + "\n\n")
+							let msg = sensor.filter(message.toString('utf-8'), req.headers[':path'].split('/')[1])
+							res.write("event: message\ndata: " + msg + "\n\n")
 						} catch (err) {
 							res.end()
 						}

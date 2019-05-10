@@ -4,11 +4,21 @@
         <the-header></the-header>
         <div class="applist-wrapper-body">
             <div class="content-wrapper">
-                <!-- <div class="title-wrapper">
+                <div class="title-wrapper">
+                    <div class="title">
+                        <p>Sensor</p>
+                    </div>
+                </div>
+                <div class="white-warp">
+                    <div v-for="(sensor, index) in sensors" :key="index">
+                        <the-sensor :sensor="sensor"></the-sensor>
+                    </div>
+                </div>
+                <div class="title-wrapper">
                     <div class="title">
                         <p>Ruangan</p>
                     </div>
-                </div> -->
+                </div>
                 <div class="white-warp">
                     <div v-for="(room, index) in rooms" :key="index">
                         <the-room :room="room" @change-option="send($event)"></the-room>
@@ -22,7 +32,8 @@
 <script>
 import TheHeader from "@/components/Header";
 import TheRoom from "@/components/Room";
-import { firstData } from "@/components/HomeAttribute";
+import TheSensor from "@/components/Sensor";
+import { sensorList } from "@/components/HomeAttribute";
 // import { fetch2 } from "fetch-h2";
 // var spdy = require('spdy');
 // var https = require('https');
@@ -32,15 +43,16 @@ import { firstData } from "@/components/HomeAttribute";
 var client = [];
 var connection = null;
 
-
 export default {
     components: {
         TheHeader,
-        TheRoom
+        TheRoom,
+        TheSensor
     },
     data() {
         return {
             rooms: [],
+            sensors: [],
             apiWs: "ws://localhost:1337",
             apiSse1: "http://localhost:3000",
             apiSse2: "https://localhost:3001"
@@ -76,17 +88,69 @@ export default {
         }
     },
     created() {
-        this.rooms = firstData;
+        this.sensors = sensorList;
         switch (this.$route.params.type) {
             case "ws":
-                client[0] = new WebSocket(this.apiWs);
+				for (let i = 0; i <= this.sensors.length; i++) {
+                    client[i] = new WebSocket(this.apiWs + "/"+i);
+                }
+                for (let i = 0; i <= this.sensors.length; i++) {
+                    client[i].addEventListener(
+                        "message",
+                        e => {
+                            if (e.data !== ""){
+								if(i === 0){
+									this.rooms = JSON.parse(e.data)
+								}else{
+									this.sensors[i - 1].property[0].value = e.data;
+								}
+							}
+                        },
+                        false
+                    );
+                }
+
                 break;
             case "sse1":
-                client[0] = new EventSource(this.apiSse1);
+                for (let i = 0; i <= this.sensors.length; i++) {
+					client[i] = new EventSource(this.apiSse1 + "/"+i);
+                }
+                for (let i = 0; i <= this.sensors.length; i++) {
+                    client[i].addEventListener(
+                        "message",
+                        e => {
+                            if (e.data !== ""){
+								if(i === 0){
+									this.rooms = JSON.parse(e.data)
+								}else{
+									this.sensors[i - 1].property[0].value = e.data;
+								}
+							}
+                        },
+                        false
+                    );
+                }
                 break;
-			case "sse2":
-				// connection = require("http2").get(this.apiSse2)
-                client[0] = new EventSource(this.apiSse2);
+            case "sse2":
+                // connection = require("http2").get(this.apiSse2)
+                for (let i = 0; i <= this.sensors.length; i++) {
+                    client[i] = new EventSource(this.apiSse2 + "/"+i);
+                }
+                for (let i = 0; i <= this.sensors.length; i++) {
+                    client[i].addEventListener(
+                        "message",
+                        e => {
+                            if (e.data !== ""){
+								if(i === 0){
+									this.rooms = JSON.parse(e.data)
+								}else{
+									this.sensors[i - 1].property[0].value = e.data;
+								}
+							}
+                        },
+                        false
+                    );
+                }
                 break;
         }
     }
@@ -104,7 +168,7 @@ export default {
 .applist-wrapper-body {
     display: flex;
     flex-flow: row wrap;
-	justify-content: center;
+    justify-content: center;
     width: 100%;
     min-height: 100vh;
 }
@@ -155,7 +219,7 @@ div.blue-btn:hover {
     line-height: 1.6;
     display: flex;
     flex-flow: row wrap;
-	justify-content: center
+    justify-content: center;
 }
 
 .content-wrapper {

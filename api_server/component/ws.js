@@ -4,6 +4,8 @@ const app = express()
 const mqtt = require('mqtt')
 var client = mqtt.connect('mqtt://localhost')
 var topics = "arduino-server"
+const __sensor = require('./filterSensor.js')
+const sensor = new __sensor()
 
 app.use(cors())
 app.use(express.static('public'))
@@ -28,8 +30,8 @@ var wsServer = new WebSocketServer({
 wsServer.on('request', function (request) {
 
 	var connection = request.accept()
-
-	sendMessage(connection)
+	
+	sendMessage(connection, request.resourceURL.path.split('/')[1])
 
 	console.log((new Date()) + ' Connection accepted.');
 	connection.on('message', function (message) {
@@ -41,9 +43,11 @@ wsServer.on('request', function (request) {
 	});
 });
 
-function sendMessage(stream) {
+function sendMessage(stream, index) {
 	client.on('message', function (topic, message) {
 		// message is Buffer
-		stream.sendUTF(message.toString('utf-8'));
+		let msg = sensor.filter(message.toString('utf-8'), index)
+		
+		stream.sendUTF(msg);
 	});
 }

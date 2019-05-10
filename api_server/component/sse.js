@@ -4,21 +4,22 @@ const app = express()
 const mqtt = require('mqtt')
 var client = mqtt.connect('mqtt://localhost')
 var topics = "arduino-server"
-
+const __sensor = require('./filterSensor.js')
+const sensor = new __sensor()
 app.use(cors())
 app.use(express.static('public'))
 app.use(express.json());
 
 client.subscribe(topics);
 
-app.get('/', (req, res) => {
+app.get('/:index', (req, res) => {
 	res.writeHead(200, {
 		'Content-Type': 'text/event-stream',
 		'Cache-Control': 'no-cache',
 		'Connection': 'keep-alive',
 	});
 	res.write('\n');
-	sendMessage(res)
+	sendMessage(res, req.params.index)
 });
 
 app.post('/', (req, res) => {	
@@ -35,10 +36,13 @@ app.listen(3000, function () { console.log(`http/1.1 on port 3000!`) });
 // 	countTes++
 // })
 
-function sendMessage(stream) {
+async function sendMessage(stream, index) {
 
 	client.on('message', function (topic, message) {
 		// message is Buffer
-		stream.write("event: message\ndata: " + message.toString('utf-8') + "\n\n")
+		
+		let msg = sensor.filter(message.toString('utf-8'), index)
+		
+		stream.write("event: message\ndata: " +msg + "\n\n")
 	});
 }

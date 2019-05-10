@@ -4,8 +4,8 @@
 		<v-layout align-start justify-start column>
 		<div v-for="(property, index) in room.property" :key="index" class="">
 				<p class="room-property grey--text text--darken-1">{{property.name}}</p>
-				<select v-model="selectedOption">
-					<option :value="select(property, option)"
+				<select v-model="property.status">
+					<option
 					v-for="option in (property.name == 'Lampu' ? optionLamp :
 					(property.name == 'Kipas Angin' ? optionFan :optionDoor	))" :key="option"
 					>{{option}}
@@ -42,12 +42,13 @@ export default {
 	props: ["room"],
 	methods:{
 		select(property, option){
-			let selectedProperty = {
-				room: this.room.name,
-				property: property.name,
-				status: option
-			}
-			return JSON.stringify(selectedProperty)
+			
+			// let selectedProperty = {
+			// 	room: this.room.name,
+			// 	property: property.name,
+			// 	status: option
+			// }
+			// return JSON.stringify(selectedProperty)
 		}
 	},
 	watch:{
