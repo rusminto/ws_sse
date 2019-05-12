@@ -4,7 +4,7 @@
 		<v-layout align-start justify-start column>
 		<div v-for="(property, index) in room.property" :key="index" class="">
 				<p class="room-property grey--text text--darken-1">{{property.name}}</p>
-				<select v-model="property.status">
+				<select v-model="property.status" @change="select(property)">
 					<option
 					v-for="option in (property.name == 'Lampu' ? optionLamp :
 					(property.name == 'Kipas Angin' ? optionFan :optionDoor	))" :key="option"
@@ -35,25 +35,17 @@ export default {
 			optionDoor:[
 				"TUTUP",
 				"BUKA"
-			],
-			selectedOption: "MATI"
+			]
 		};
     },
 	props: ["room"],
 	methods:{
-		select(property, option){
-			
-			// let selectedProperty = {
-			// 	room: this.room.name,
-			// 	property: property.name,
-			// 	status: option
-			// }
-			// return JSON.stringify(selectedProperty)
-		}
-	},
-	watch:{
-		selectedOption(val){
-			this.$emit("change-option", val)
+		select(property){
+			this.$emit("change-option", JSON.stringify({
+				room: this.room.name,
+				property: property.name,
+				status: property.status
+			}))
 		}
 	}
 };

@@ -16,7 +16,21 @@ http2.createSecureServer({
 	(req, res) => {
 		
 		if (req.headers[':method'] == 'POST') {
-			// console.log(req.stream);
+			let body = '';
+			req.setEncoding('utf8');
+			req.on('data', (chunk) => {
+				body += chunk
+			})
+			req.on('end', () => {
+				try{
+					console.log(body);
+					client.publish('server-arduino', body)
+					res.end()
+				}catch(err){
+					res.statusCode = 400;
+					res.end(err)
+				}
+			})
 			
 			client.publish('server-arduino', 'sse_http2')
 			res.setHeader('Access-Control-Allow-Origin', '*')

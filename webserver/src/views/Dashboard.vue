@@ -78,11 +78,14 @@ export default {
                     });
                     break;
 
-                case "sse2":
-                    // const method = 'POST';
-                    // var buffer = new Buffer(msg);
-                    // var contentLength = buffer.length
-                    // const response = fetch( this.apiSse2, { method, contentLength, msg } );
+				case "sse2":
+					var buffer = new Buffer(msg);
+                    fetch(`${this.apiSse2}/`, {
+                        method: "POST",
+                        body: msg
+                    }).then(response => {
+                        console.log(response.statusText);
+                    });
                     break;
             }
         }
