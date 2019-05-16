@@ -1,0 +1,8 @@
+sse1:
+- only handle 6 connection @ browser
+
+ws:
+- cannot reconnect
+
+sse2:
+- still nothing

@@ -6,6 +6,9 @@ var client = mqtt.connect('mqtt://localhost')
 var topics = "arduino-server"
 const __sensor = require('./filterSensor.js')
 const sensor = new __sensor()
+const __convert = require('./convertData.js')
+const convert = new __convert()
+
 app.use(cors())
 app.use(express.static('public'))
 app.use(express.json());
@@ -22,8 +25,8 @@ app.get('/:index', (req, res) => {
 	sendMessage(res, req.params.index)
 });
 
-app.post('/', (req, res) => {	
-	client.publish('server-arduino', JSON.stringify(req.body))
+app.post('/', (req, res) => {
+	client.publish('server-arduino', convert.convert(req.body))
 	res.send('OK');
 });
 

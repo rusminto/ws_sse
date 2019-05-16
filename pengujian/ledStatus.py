@@ -10,7 +10,7 @@ klien = mqtt.Client("client 3")
 klien.connect("localhost")
 
 while True:
-	data = [
+	data = {"0":[
 		{
 			"name": "Kamar tidur depan",
 			"property": [
@@ -100,17 +100,8 @@ while True:
 				{"name": "Lampu",
 				"status": "MATI"}
 			]
-		},
-		{
-			"name": "Garasi",
-			"property": [
-				{"name": "Pintu",
-				"status": "TUTUP"},
-				{"name": "Lampu",
-				"status": "MATI"}
-			]
 		}
-	]
+	]}
 	klien.publish("arduino-server", json.dumps(data))
 	time.sleep(3)
 

@@ -20,7 +20,7 @@
                     </div>
                 </div>
                 <div class="white-warp">
-                    <div v-for="(room, index) in rooms" :key="index">
+                    <div v-for="(room, roomIndex) in listRooms" :key="roomIndex">
                         <the-room :room="room" @change-option="send($event)"></the-room>
                     </div>
                 </div>
@@ -55,7 +55,9 @@ export default {
             sensors: [],
             apiWs: "ws://localhost:1337",
             apiSse1: "http://localhost:3000",
-            apiSse2: "https://localhost:3001"
+            apiSse2: "https://localhost:3001",
+            totalArduino: 2,
+            listRooms: []
         };
     },
     methods: {
@@ -78,8 +80,8 @@ export default {
                     });
                     break;
 
-				case "sse2":
-					var buffer = new Buffer(msg);
+                case "sse2":
+                    var buffer = new Buffer(msg);
                     fetch(`${this.apiSse2}/`, {
                         method: "POST",
                         body: msg
@@ -88,73 +90,70 @@ export default {
                     });
                     break;
             }
+        },
+        listen() {
+            for (let i = 0; i <= this.sensors.length; i++) {
+                client[i].addEventListener(
+                    "message",
+                    e => {
+                        if (e.data !== "") {
+                            if (i === 0) {
+                                let tempRooms = JSON.parse(e.data);
+                                let id = Object.keys(tempRooms)[0];
+                                this.rooms[id] = tempRooms[id];
+                                if (
+                                    this.rooms[0].length > 0 &&
+                                    this.rooms[1].length > 0
+                                ) {
+                                    this.listRooms = [];
+                                    this.listRooms = this.listRooms.concat(
+                                        this.rooms[0],
+                                        this.rooms[1]
+                                    );
+                                }
+                            } else {
+                                this.sensors[i - 1].property[0].value = e.data;
+                            }
+                        }
+                    },
+                    false
+                );
+            }
         }
     },
     created() {
         this.sensors = sensorList;
         switch (this.$route.params.type) {
             case "ws":
-				for (let i = 0; i <= this.sensors.length; i++) {
-                    client[i] = new WebSocket(this.apiWs + "/"+i);
-                }
                 for (let i = 0; i <= this.sensors.length; i++) {
-                    client[i].addEventListener(
-                        "message",
-                        e => {
-                            if (e.data !== ""){
-								if(i === 0){
-									this.rooms = JSON.parse(e.data)
-								}else{
-									this.sensors[i - 1].property[0].value = e.data;
-								}
-							}
-                        },
-                        false
-                    );
+                    client[i] = new WebSocket(this.apiWs + "/" + i);
                 }
+                this.listen();
 
                 break;
             case "sse1":
                 for (let i = 0; i <= this.sensors.length; i++) {
-					client[i] = new EventSource(this.apiSse1 + "/"+i);
+                    client[i] = new EventSource(this.apiSse1 + "/" + i);
                 }
-                for (let i = 0; i <= this.sensors.length; i++) {
-                    client[i].addEventListener(
-                        "message",
-                        e => {
-                            if (e.data !== ""){
-								if(i === 0){
-									this.rooms = JSON.parse(e.data)
-								}else{
-									this.sensors[i - 1].property[0].value = e.data;
-								}
-							}
-                        },
-                        false
-                    );
-                }
+                this.listen();
                 break;
             case "sse2":
                 // connection = require("http2").get(this.apiSse2)
                 for (let i = 0; i <= this.sensors.length; i++) {
-                    client[i] = new EventSource(this.apiSse2 + "/"+i);
+                    client[i] = new EventSource(this.apiSse2 + "/" + i);
                 }
-                for (let i = 0; i <= this.sensors.length; i++) {
-                    client[i].addEventListener(
-                        "message",
-                        e => {
-                            if (e.data !== ""){
-								if(i === 0){
-									this.rooms = JSON.parse(e.data)
-								}else{
-									this.sensors[i - 1].property[0].value = e.data;
-								}
-							}
-                        },
-                        false
-                    );
-                }
+                this.listen();
                 break;
+        }
+    },
+    watch: {
+        rooms(val) {
+            console.log(val);
+            // let temp = JSON.parse(val)
+            // this.rooms = temp
+            // // this.rooms[Number(temp[0].id)] = temp
+            // // this.rooms[Number(temp[0].id)].shift()
+            // console.log(this.rooms);
         }
     }
 };

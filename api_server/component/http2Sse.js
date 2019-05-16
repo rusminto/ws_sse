@@ -5,6 +5,8 @@ var client = mqtt.connect('mqtt://localhost')
 var topics = "arduino-server"
 const __sensor = require('./filterSensor.js')
 const sensor = new __sensor()
+const __convert = require('./convertData.js')
+const convert = new __convert()
 
 client.subscribe(topics);
 
@@ -24,7 +26,7 @@ http2.createSecureServer({
 			req.on('end', () => {
 				try{
 					console.log(body);
-					client.publish('server-arduino', body)
+					client.publish('server-arduino', convert.convert(JSON.parse(body)))
 					res.end()
 				}catch(err){
 					res.statusCode = 400;
@@ -32,7 +34,6 @@ http2.createSecureServer({
 				}
 			})
 			
-			client.publish('server-arduino', 'sse_http2')
 			res.setHeader('Access-Control-Allow-Origin', '*')
 			res.write('OK')
 		} else if (req.headers[':method'] == 'GET') {
