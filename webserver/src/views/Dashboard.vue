@@ -53,9 +53,9 @@ export default {
         return {
             rooms: [],
             sensors: [],
-            apiWs: "ws://localhost:1337",
-            apiSse1: "http://localhost:3000",
-            apiSse2: "https://localhost:3001",
+            apiWs: "ws://10.33.109.102:1337",
+            apiSse1: "http://10.33.109.102:3000",
+            apiSse2: "https://10.33.109.102:3001",
             totalArduino: 2,
             listRooms: []
         };
