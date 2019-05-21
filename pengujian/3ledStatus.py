@@ -6,22 +6,29 @@ import time
 import math
 import json
 
-klien = mqtt.Client("client 4")
-klien.connect("localhost")
+data = {"1": [
+	{
+		"name": "Garasi",
+		"property": [
+			{"name": "Pintu",
+			"status": "TUTUP"},
+			{"name": "Lampu",
+			"status": "MATI"}
+		]
+	}
+]}
 
-while True:
-	data = {"1": [
-		{
-			"name": "Garasi",
-			"property": [
-				{"name": "Pintu",
-				"status": "TUTUP"},
-				{"name": "Lampu",
-				"status": "MATI"}
-			]
-		}
-	]}
-	klien.publish("arduino-server", json.dumps(data))
-	time.sleep(3)
+def on_connect(client, userdata, flags, rc):
+	client.subscribe("server-arduino")
 
-klien.disconnect()
+def on_message(client, userdata, msg):
+	client.publish("arduino-server", json.dumps(data))
+
+client = mqtt.Client("client 4")
+client.connect("localhost")
+
+client.on_connect = on_connect
+client.on_message = on_message
+
+client.loop_forever()
+

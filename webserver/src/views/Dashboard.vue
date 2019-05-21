@@ -53,16 +53,15 @@ export default {
         return {
             rooms: [],
             sensors: [],
-            apiWs: "ws://10.33.109.102:1337",
-            apiSse1: "http://10.33.109.102:3000",
-            apiSse2: "https://10.33.109.102:3001",
+            apiWs: "ws://10.33.109.103:1337",
+            apiSse1: "http://10.33.109.103:3000",
+            apiSse2: "https://10.33.109.103:3001",
             totalArduino: 2,
             listRooms: []
         };
     },
     methods: {
         send(msg) {
-            console.log(msg);
             switch (this.$route.params.type) {
                 case "ws":
                     client[0].send(msg);
@@ -76,7 +75,7 @@ export default {
                         },
                         body: msg
                     }).then(response => {
-                        console.log(response.statusText);
+                        // console.log(response.statusText);
                     });
                     break;
 
@@ -86,7 +85,7 @@ export default {
                         method: "POST",
                         body: msg
                     }).then(response => {
-                        console.log(response.statusText);
+                        // console.log(response.statusText);
                     });
                     break;
             }
@@ -98,8 +97,12 @@ export default {
                     e => {
                         if (e.data !== "") {
                             if (i === 0) {
-                                let tempRooms = JSON.parse(e.data);
-                                let id = Object.keys(tempRooms)[0];
+								let tempRooms = JSON.parse(e.data);
+								let timeDiff = new Date() - new Date(tempRooms.currentTime)
+								if(!isNaN(timeDiff))
+								console.log(timeDiff)
+
+								let id = Object.keys(tempRooms)[0];
                                 this.rooms[id] = tempRooms[id];
                                 if (
                                     this.rooms[0].length > 0 &&
@@ -117,34 +120,32 @@ export default {
                         }
                     },
                     false
-                );
-            }
+				);
+			}
+			client[0].onopen = () => this.send(JSON.stringify({currentTime: new Date()}))
         }
     },
-    created() {
+    mounted() {
         this.sensors = sensorList;
         switch (this.$route.params.type) {
             case "ws":
                 for (let i = 0; i <= this.sensors.length; i++) {
                     client[i] = new WebSocket(this.apiWs + "/" + i);
                 }
-                this.listen();
-
                 break;
             case "sse1":
                 for (let i = 0; i <= this.sensors.length; i++) {
                     client[i] = new EventSource(this.apiSse1 + "/" + i);
                 }
-                this.listen();
                 break;
             case "sse2":
                 // connection = require("http2").get(this.apiSse2)
                 for (let i = 0; i <= this.sensors.length; i++) {
                     client[i] = new EventSource(this.apiSse2 + "/" + i);
                 }
-                this.listen();
                 break;
-        }
+		}
+		this.listen();
     },
     watch: {
         rooms(val) {

@@ -6,10 +6,11 @@ import time
 import math
 import json
 
-klien = mqtt.Client("client 3")
-klien.connect("localhost")
+def on_connect(client, userdata, flags, rc):
+	client.subscribe("server-arduino")
 
-while True:
+def on_message(client, userdata, msg):
+	dataTemp = msg.payload.decode()
 	data = {"0":[
 		{
 			"name": "Kamar tidur depan",
@@ -101,8 +102,16 @@ while True:
 				"status": "MATI"}
 			]
 		}
-	]}
-	klien.publish("arduino-server", json.dumps(data))
-	time.sleep(3)
+	],
+	"currentTime": dataTemp.split(';')[3]
+	}
+	client.publish("arduino-server", json.dumps(data))
 
-klien.disconnect()
+client = mqtt.Client("client 3")
+client.connect("localhost")
+
+client.on_connect = on_connect
+client.on_message = on_message
+
+client.loop_forever()
+

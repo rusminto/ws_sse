@@ -2,7 +2,8 @@ sse1:
 - only handle 6 connection @ browser
 
 ws:
+- only handle 153 connection @ browser
 - cannot reconnect
 
 sse2:
-- still nothing
+- only handle 103 connection @ browser

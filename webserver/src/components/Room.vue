@@ -44,7 +44,8 @@ export default {
 			this.$emit("change-option", JSON.stringify({
 				room: this.room.name,
 				property: property.name,
-				status: property.status
+				status: property.status,
+				currentTime: new Date()
 			}))
 		}
 	}

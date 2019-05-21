@@ -3,7 +3,6 @@ class convertData{
 
 	convert(msg){
 		let data = ""
-		console.log(msg);
 		switch(msg.status){
 				case "MATI" : data += "0"; break;
 				case "HIDUP - REDUP" : data += "1"; break;
@@ -49,6 +48,7 @@ class convertData{
 			default : data += "14";
 		}	
 		data += ";";
+		data += msg.currentTime
 		return data
 	}
 }
