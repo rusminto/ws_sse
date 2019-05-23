@@ -53,9 +53,9 @@ export default {
         return {
             rooms: [],
             sensors: [],
-            apiWs: "ws://10.33.109.103:1337",
-            apiSse1: "http://10.33.109.103:3000",
-            apiSse2: "https://10.33.109.103:3001",
+            apiWs: "ws://serveo.net:6569",
+            apiSse1: "http://serveo.net:6701",
+            apiSse2: "https://serveo.net:6883",
             totalArduino: 2,
             listRooms: []
         };
