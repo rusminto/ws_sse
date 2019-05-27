@@ -5,7 +5,7 @@ import router from './router'
 import store from './store'
 // import mqtt from 'vue-mqtt';
 import './registerServiceWorker'
-import VueNativeSock from 'vue-native-websocket'
+// import VueNativeSock from 'vue-native-websocket'
 
 // Vue.use(VueNativeSock, 'ws://serveo.net:3558', { store: store })
 

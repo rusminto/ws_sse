@@ -14,6 +14,13 @@ class filterSensor{
 		}
 		
 		if(index == "0" && sensorIdentity == null){
+			
+			//test one-way
+			// let json = JSON.parse(msg)
+			// json.currentTime = new Date()
+			// return JSON.stringify(json)
+
+			//test round-trip time
 			return msg
 		}
 		

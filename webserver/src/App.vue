@@ -1,12 +1,15 @@
 <template>
+	  <v-app>
   <div id="app">
     <div id="nav">
       <router-link to="/ws">WS</router-link> |
-      <router-link to="/http/1">HTTP/1.1</router-link> |
-	  <router-link to="/http/2">HTTP/2</router-link>
+      <router-link to="/sse1">HTTP/1.1</router-link> |
+	  <router-link to="/sses">HTTPS/1.1</router-link> |
+	  <router-link to="/sse2">HTTP/2</router-link>
     </div>
     <router-view/>
   </div>
+	</v-app>
 </template>
 
 <style>
