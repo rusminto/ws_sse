@@ -2,7 +2,7 @@ const express = require('express')
 var cors = require('cors');
 const app = express()
 const mqtt = require('mqtt')
-var client = mqtt.connect('mqtt://localhost')
+var client = mqtt.connect('mqtt://192.168.100.6')
 var topics = "arduino-server"
 const __sensor = require('./filterSensor.js')
 const sensor = new __sensor()
@@ -37,7 +37,8 @@ wsServer.on('request', function (request) {
 
 	console.log((new Date()) + ' Connection accepted.');
 	connection.on('message', function (message) {
-		client.publish('server-arduino', convert.convert(JSON.parse(message.utf8Data)))
+		let convertData = convert.convert(JSON.parse(message.utf8Data))
+		client.publish(convertData.topic, convertData.msg)
 	});
 	connection.on('close', function (reasonCode, description) {
 		console.log((new Date()) + ' Peer ' + connection.remoteAddress + ' disconnected.');

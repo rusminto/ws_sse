@@ -2,7 +2,7 @@ const express = require('express')
 var cors = require('cors');
 const app = express()
 const mqtt = require('mqtt')
-var client = mqtt.connect('mqtt://localhost')
+var client = mqtt.connect('mqtt://192.168.100.222')
 var topics = "arduino-server"
 const __sensor = require('./filterSensor.js')
 const sensor = new __sensor()
@@ -26,7 +26,9 @@ app.get('/:index', (req, res) => {
 });
 
 app.post('/', (req, res) => {
-	client.publish('server-arduino', convert.convert(req.body))
+	let convertData = convert.convert(req.body)
+	// console.log(convertData);
+	client.publish(convertData.topic, convertData.msg)
 	res.send('OK');
 });
 
@@ -43,7 +45,6 @@ async function sendMessage(stream, index) {
 
 	client.on('message', function (topic, message) {
 		// message is Buffer
-		
 		let msg = sensor.filter(message.toString('utf-8'), index)
 		
 		stream.write("event: message\ndata: " +msg + "\n\n")

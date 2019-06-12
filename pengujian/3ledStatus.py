@@ -18,11 +18,16 @@ data = {"1": [
 	}
 ]}
 
+data1 = "1|07-2=0;12-1=0|"
+
 def on_connect(client, userdata, flags, rc):
-	client.subscribe("server-arduino")
+	client.subscribe("home/all")
+	client.subscribe("home/32")
 
 def on_message(client, userdata, msg):
-	client.publish("arduino-server", json.dumps(data))
+	# client.publish("arduino-server", json.dumps(data))
+	print(data1)
+	client.publish("arduino-server", data1)
 
 client = mqtt.Client("client 4")
 client.connect("localhost")

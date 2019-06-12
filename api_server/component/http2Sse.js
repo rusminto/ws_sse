@@ -1,7 +1,7 @@
 const http2 = require('http2');
 const fs = require('fs');
 const mqtt = require('mqtt')
-var client = mqtt.connect('mqtt://localhost')
+var client = mqtt.connect('mqtt://192.168.100.6')
 var topics = "arduino-server"
 const __sensor = require('./filterSensor.js')
 const sensor = new __sensor()
@@ -26,7 +26,8 @@ http2.createSecureServer({
 			req.on('end', () => {
 				try{
 					console.log(body);
-					client.publish('server-arduino', convert.convert(JSON.parse(body)))
+					let convertData = convert.convert(JSON.parse(body))
+					client.publish(convertData.topic, convertData.msg)
 					res.end()
 				}catch(err){
 					res.statusCode = 400;

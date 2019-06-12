@@ -13,6 +13,6 @@ while True:
 #    value2 = random.randint(1, 101)
 #    value = value * pow(10000, 10000)
     klien.publish("arduino-server", "kitchen: "+str(value))
-    time.sleep(1)
+    time.sleep(1000)
 
 klien.disconnect()

@@ -179,16 +179,19 @@ export default {
                 client[i].addEventListener(
                     "message",
                     e => {
+						// console.log(e.data);
+						
                         if (e.data !== "") {
                             if (i === 0) {
 								let tempRooms = JSON.parse(e.data);
-
+	
 								let id = Object.keys(tempRooms)[0];
 								if(id == 0){
 									this.roomsArduinoA = tempRooms[0];
 									let countQueue = 0
 									let currentTime = new Date(tempRooms.currentTime)
 									let timeDiff = new Date() - currentTime
+									
 									// if(!isNaN(timeDiff)) console.log(timeDiff)
 									
 									//test one-way

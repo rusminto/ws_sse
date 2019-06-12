@@ -3,6 +3,7 @@ class convertData{
 
 	convert(msg){
 		let data = ""
+		let topic = ""
 		switch(msg.status){
 				case "MATI" : data += "0"; break;
 				case "HIDUP - REDUP" : data += "1"; break;
@@ -20,7 +21,7 @@ class convertData{
 			case "Lampu" : data += "1";break;
 			case "Kipas Angin" : data += "2";break;
 			case "Pintu" : 
-			if(msg.room == "Teras"){
+			if(msg.room == "Ruang Tamu"){
 				data += "3;5;"
 				return data
 			} else if(msg.room == "Garasi"){
@@ -32,24 +33,27 @@ class convertData{
 		}
 		data += ";";
 		switch(msg.room){
-			case "Kamar tidur depan" : data += "1";break;
-			case "Kamar tidur utama" : data += "2";break;
-			case "Dapur" : data += "3";break;
-			case "Ruang makan" : data += "4";break;
-			case "Teras" : data += "5";break;
-			case "Ruang tamu" : data += "6";break;
-			case "Ruang keluarga" : data += "7";break;
-			case "Mushola" : data += "8";break;
-			case "Kamar mandi #1" : data += "9";break;
-			case "Kamar mandi #2" : data += "10";break;
-			case "Tempat Pencucian" : data += "11";break;
-			case "Halaman Belakang" : data += "12";break;
-			case "Garasi" : data += "13";break;
-			default : data += "14";
+			case "Kamar Tidur #1" : data += "01"; topic="home/8266"; break;
+			case "Kamar Tidur #2" : data += "02"; topic="home/8266"; break;
+			case "Dapur" : data += "03"; topic="home/8266"; break;
+			case "Ruang Makan" : data += "04"; topic="home/8266"; break;
+			case "Teras" : data += "05"; topic="home/8266"; break;
+			case "Ruang Tamu" : data += "06"; topic="home/8266"; break;
+			case "Ruang Keluarga" : data += "07"; topic="home/32";break;
+			case "Mushola" : data += "08"; topic="home/8266";break;
+			case "Kamar Mandi #1" : data += "09"; topic="home/8266";break;
+			case "Kamar Mandi #2" : data += "10"; topic="home/8266";break;
+			case "Tempat Cuci" : data += "11"; topic="home/8266";break;
+			case "Halaman Belakang" : data += "12"; topic="home/32";break;
+			case "Garasi" : data += "13"; topic="home/8266";break;
+			default : data += "14"; topic="home/all";
 		}	
 		data += ";";
 		data += msg.currentTime
-		return data
+		return {
+			msg: data,
+			topic: topic
+		}
 	}
 }
 

@@ -48,6 +48,14 @@ export default {
 				currentTime: new Date()
 			}))
 		}
+	},
+	watch:{
+		room:{
+			handler: function(val){
+				console.log(JSON.stringify(val));
+			},
+			deep: true
+		}
 	}
 };
 </script>
