@@ -103,10 +103,14 @@ export default {
 			roomsArduinoA: [],
 			roomsArduinoB: [],
             sensors: [],
-            apiWs: "ws://localhost:1337",
-			apiSse1: "http://localhost:3000",
-			apiSses: "https://localhost:3002",
-            apiSse2: "https://localhost:3001",
+            apiWs: "ws://serveo.net:3554",
+			apiSse1: "http://serveo.net:3552",
+			apiSses: "https://serveo.net:3553",
+            apiSse2: "https://serveo.net:3551",
+            /*apiWs: "ws://192.168.100.223:1337",
+			apiSse1: "http://192.168.100.223:3000",
+			apiSses: "https://192.168.100.223:3002",
+            apiSse2: "https://192.168.100.223:3001",*/
             totalArduino: 2,
 			listRooms: [],
 			showPopup: false,
@@ -118,6 +122,7 @@ export default {
     },
     methods: {
 		startTimer(ms){
+            this.timerQueue = []
 			timer = setInterval(() => {
 				let currentTime = new Date()
 				this.send(JSON.stringify({currentTime: currentTime}))
@@ -126,7 +131,7 @@ export default {
 
 				if(this.totalQueue == this.totalValue){
 					clearInterval(timer)
-					this.totalQueue = 0		
+					this.totalQueue = 0
 				}
 			}, ms)
 		},
@@ -179,44 +184,42 @@ export default {
                 client[i].addEventListener(
                     "message",
                     e => {
-						// console.log(e.data);
+						 //console.log(e.data);
 						
                         if (e.data !== "") {
                             if (i === 0) {
 								let tempRooms = JSON.parse(e.data);
 	
 								let id = Object.keys(tempRooms)[0];
-								if(id == 0){
-									this.roomsArduinoA = tempRooms[0];
-									let countQueue = 0
+								if(id == 1){
+									this.roomsArduinoA = tempRooms[1];
 									let currentTime = new Date(tempRooms.currentTime)
 									let timeDiff = new Date() - currentTime
 									
 									// if(!isNaN(timeDiff)) console.log(timeDiff)
 									
 									//test one-way
-									// console.log(timeDiff);
+									//console.log(timeDiff);
 									
 									//test round-trip time
 									let newQueue = this.timerQueue.filter(item =>{
 										if((new Date(item) - currentTime) == 0){
 											console.log(timeDiff)
+                                            console.log(currentTime.toISOString())
 										}else{
-											countQueue++
 											return item
 										}
 									})
-
-									if(countQueue == this.timerQueue.length){
-										console.log("loss : "+tempRooms.currentTime);
-										this.timerQueue = this.timerQueue.filter(item => (new Date(item) - currentTime) != 0)
-									}
-
 									this.timerQueue = newQueue
+                                    if(this.totalQueue == 0) {
+                                        console.log("tumpukan yang belum diterima : "+this.timerQueue.length)
+                                        console.log(this.timerQueue.map(item => item.toISOString()))
+                                        //this.timerQueue = []
+                                    }
 								}
 								
-								if(id == 1)
-								this.roomsArduinoB = tempRooms[1];
+								if(id == 0)
+								this.roomsArduinoB = tempRooms[0];
 								// console.log(tempRooms[0]);
                                 // if (
                                 //     this.rooms[0].length > 0 &&
@@ -272,7 +275,7 @@ export default {
     },
     watch: {
         rooms(val) {
-            console.log(val);
+            //console.log(val);
             // let temp = JSON.parse(val)
             // this.rooms = temp
             // // this.rooms[Number(temp[0].id)] = temp

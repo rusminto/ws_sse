@@ -52,7 +52,7 @@ export default {
 	watch:{
 		room:{
 			handler: function(val){
-				console.log(JSON.stringify(val));
+				//console.log(JSON.stringify(val));
 			},
 			deep: true
 		}
