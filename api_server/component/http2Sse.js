@@ -1,7 +1,8 @@
 const http2 = require('http2');
 const fs = require('fs');
 const mqtt = require('mqtt')
-var client = mqtt.connect('mqtt://192.168.100.6')
+//var client = mqtt.connect('mqtt://192.168.100.6')
+var client = mqtt.connect('mqtt://localhost')
 var topics = "arduino-server"
 const __sensor = require('./filterSensor.js')
 const sensor = new __sensor()

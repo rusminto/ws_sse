@@ -1,10 +1,9 @@
 class filterSensor {
 	constructor() { }
-
+	
 	filter(msg, index) {
-		// console.log(msg)
 		let sensorIdentity = msg.match(/(kitchen|Outside)/g)
-
+		
 		if (sensorIdentity) {
 			if (index == "1" && sensorIdentity[0] == "kitchen") {
 				return msg.match(/(\d+)/g)[0]
@@ -13,8 +12,8 @@ class filterSensor {
 				return msg.match(/(\d+)/g)[0]
 			}
 		}
-
-		if (index == "0" && sensorIdentity == null) {
+		
+		if (index == "0" && !sensorIdentity) {
 			let jsonTemp = []
 			let isTimer = false
 			let parseMsg = msg.split('|');
