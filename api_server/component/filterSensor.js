@@ -1,10 +1,9 @@
 class filterSensor {
 	constructor() { }
-
+	
 	filter(msg, index) {
 		// console.log(msg)
 		let sensorIdentity = msg.match(/(kitchen|outside)/g)
-
 		if (sensorIdentity) {
 			if (index == "1" && sensorIdentity[0] == "kitchen") {
 				return msg.match(/(\d+)/g)[0]
