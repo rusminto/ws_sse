@@ -22,16 +22,23 @@ class convertData{
 			case "Kipas Angin" : data += "2";break;
 			case "Pintu" : 
 			if(msg.room == "Ruang Tamu"){
-				data += "3;5;"
-				return data
+				data += "3;14;";topic="home/8266"
+				return {
+					msg: data,
+					topic: topic
+				}
 			} else if(msg.room == "Garasi"){
-				data += "4;13;"
-				return data
+				data += "4;14;";topic="home/8266"
+				return {
+					msg: data,
+					topic: topic
+				}
 			}
 			;break;
 			default : data+="5";
 		}
 		data += ";";
+		if(msg.property != "Pintu")
 		switch(msg.room){
 			case "Kamar Tidur #1" : data += "01"; topic="home/8266"; break;
 			case "Kamar Tidur #2" : data += "02"; topic="home/8266"; break;

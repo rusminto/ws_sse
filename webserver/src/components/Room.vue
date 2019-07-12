@@ -24,13 +24,15 @@ export default {
 				"MATI",
 				"HIDUP - REDUP",
 				"HIDUP - SEDANG",
-				"HIDUP - TERANG"				
+				"HIDUP - TERANG",
+				"HIDUP"				
 			],
 			optionFan:[
 				"MATI",
 				"HIDUP - PELAN",
 				"HIDUP - SEDANG",
-				"HIDUP - CEPAT"
+				"HIDUP - CEPAT",
+				"HIDUP"
 			],
 			optionDoor:[
 				"TUTUP",

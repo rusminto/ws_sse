@@ -103,14 +103,14 @@ export default {
 			roomsArduinoA: [],
 			roomsArduinoB: [],
             sensors: [],
-            apiWs: "ws://serveo.net:3554",
+            /*apiWs: "ws://serveo.net:3554",
 			apiSse1: "http://serveo.net:3552",
 			apiSses: "https://serveo.net:3553",
-            apiSse2: "https://serveo.net:3551",
-            /*apiWs: "ws://192.168.100.223:1337",
+            apiSse2: "https://serveo.net:3551",*/
+            apiWs: "ws://192.168.100.223:1337",
 			apiSse1: "http://192.168.100.223:3000",
 			apiSses: "https://192.168.100.223:3002",
-            apiSse2: "https://192.168.100.223:3001",*/
+            apiSse2: "https://192.168.100.223:3001",
             totalArduino: 2,
 			listRooms: [],
 			showPopup: false,
