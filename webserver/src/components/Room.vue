@@ -24,13 +24,15 @@ export default {
 				"MATI",
 				"HIDUP - REDUP",
 				"HIDUP - SEDANG",
-				"HIDUP - TERANG"				
+				"HIDUP - TERANG",
+				"HIDUP"				
 			],
 			optionFan:[
 				"MATI",
 				"HIDUP - PELAN",
 				"HIDUP - SEDANG",
-				"HIDUP - CEPAT"
+				"HIDUP - CEPAT",
+				"HIDUP"
 			],
 			optionDoor:[
 				"TUTUP",
@@ -52,7 +54,7 @@ export default {
 	watch:{
 		room:{
 			handler: function(val){
-				console.log(JSON.stringify(val));
+				//console.log(JSON.stringify(val));
 			},
 			deep: true
 		}

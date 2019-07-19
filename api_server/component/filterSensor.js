@@ -2,18 +2,17 @@ class filterSensor {
 	constructor() { }
 	
 	filter(msg, index) {
-		let sensorIdentity = msg.match(/(kitchen|Outside)/g)
-		
+		// console.log(msg)
+		let sensorIdentity = msg.match(/(kitchen|outside)/g)
 		if (sensorIdentity) {
 			if (index == "1" && sensorIdentity[0] == "kitchen") {
 				return msg.match(/(\d+)/g)[0]
 			}
-			if (index == "2" && sensorIdentity[0] == "Outside") {
+			if (index == "2" && sensorIdentity[0] == "outside") {
 				return msg.match(/(\d+)/g)[0]
 			}
 		}
-		
-		if (index == "0" && !sensorIdentity) {
+		if (index == "0" && sensorIdentity == null) {
 			let jsonTemp = []
 			let isTimer = false
 			let parseMsg = msg.split('|');
