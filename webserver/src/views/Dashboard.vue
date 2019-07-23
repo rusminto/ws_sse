@@ -103,18 +103,18 @@ export default {
 			roomsArduinoA: [],
 			roomsArduinoB: [],
             sensors: [],
-            // apiWs: "ws://serveo.net:3554",
-			// apiSse1: "http://serveo.net:3552",
-			// apiSses: "https://serveo.net:3553",
-            // apiSse2: "https://serveo.net:3551",
+            apiWs: "ws://serveo.net:6884",
+			apiSse1: "http://serveo.net:6881",
+			apiSses: "https://serveo.net:6882",
+            apiSse2: "https://serveo.net:6883",
             // apiWs: "ws://192.168.100.223:1337",
 			// apiSse1: "http://192.168.100.223:3000",
 			// apiSses: "https://192.168.100.223:3002",
 			// apiSse2: "https://192.168.100.223:3001",
-			apiWs: "ws://localhost",
-			apiSse1: "http://localhost:3000",
-			apiSses: "https://localhost:3002",
-            apiSse2: "https://localhost:3001",
+			// apiWs: "ws://localhost",
+			// apiSse1: "http://localhost:3000",
+			// apiSses: "https://localhost:3002",
+            // apiSse2: "https://localhost:3001",
             totalArduino: 2,
 			listRooms: [],
 			showPopup: false,
@@ -251,7 +251,7 @@ export default {
         }
     },
     mounted() {
-        this.sensors = sensorList;
+		this.sensors = sensorList;
         switch (this.$route.params.type) {
             case "ws":
                 for (let i = 0; i <= this.sensors.length; i++) {
