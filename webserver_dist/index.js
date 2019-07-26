@@ -13,8 +13,9 @@ const server = http.createServer((request, response) => {
 	]
   });
 })
-server.listen(3000, () => {
-  console.log('Running at http://localhost:3000');
+var port = 8081
+server.listen(port, () => {
+  console.log('Running at http://localhost:'+port);
 });
 // var history = require('connect-history-api-fallback');
 // var express = require('express');
